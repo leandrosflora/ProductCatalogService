@@ -8,10 +8,11 @@ public sealed class MockProductCatalogStore
     private readonly Dictionary<Guid, Product> _products = new();
 
     public MockProductCatalogStore()
-    {
+    { 
+
         Seed(new Product(
-            Guid.Parse("11111111-1111-1111-1111-111111111111"),
-            Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+            Guid.Parse("00000000-0000-0000-0000-000000000000"),
+            Guid.Parse("00000000-0000-0000-0000-000000000000"),
             "Smartphone Mock 128GB",
             "Electronics",
             1999.90m,
@@ -19,6 +20,17 @@ public sealed class MockProductCatalogStore
             0.19m,
             isFragile: true,
             isRestricted: false));
+
+        Seed(new Product(
+           Guid.Parse("11111111-1111-1111-1111-111111111111"),
+           Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+           "Smartphone Mock 128GB",
+           "Electronics",
+           1999.90m,
+           new ProductDimensions(15.8m, 7.5m, 0.9m),
+           0.19m,
+           isFragile: true,
+           isRestricted: false));
 
         Seed(new Product(
             Guid.Parse("22222222-2222-2222-2222-222222222222"),

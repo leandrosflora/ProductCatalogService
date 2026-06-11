@@ -36,15 +36,15 @@ public sealed class Product
         bool isFragile,
         bool isRestricted)
     {
-        if (sellerId == Guid.Empty)
-        {
-            throw new ArgumentException("SellerId is required", nameof(sellerId));
-        }
+        //if (sellerId == Guid.Empty)
+        //{
+        //    throw new ArgumentException("SellerId is required", nameof(sellerId));
+        //}
 
-        if (skuId == Guid.Empty)
-        {
-            throw new ArgumentException("SkuId is required", nameof(skuId));
-        }
+        //if (skuId == Guid.Empty)
+        //{
+        //    throw new ArgumentException("SkuId is required", nameof(skuId));
+        //}
 
         if (string.IsNullOrWhiteSpace(title))
         {
