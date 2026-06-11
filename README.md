@@ -199,8 +199,20 @@ ASPNETCORE_ENVIRONMENT="Development"
 ### Pré-requisitos
 
 - SDK do **.NET 8** instalado.
-- PostgreSQL disponível.
-- Redis disponível.
+
+> Modo mock temporário: enquanto as instâncias de PostgreSQL e Redis não forem criadas, a API usa implementações em memória para repositório, cache e outbox. Portanto, não é necessário subir banco de dados nem Redis para executar os endpoints localmente.
+
+### Dados mockados disponíveis
+
+A aplicação sobe com alguns SKUs pré-cadastrados para facilitar testes de consulta, batch, atualização física e alteração de status:
+
+| SKU | Seller | Produto | Status inicial |
+|---|---|---|---|
+| `aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa` | `11111111-1111-1111-1111-111111111111` | Smartphone Mock 128GB | `Active` |
+| `bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb` | `22222222-2222-2222-2222-222222222222` | Tênis Mock Runner | `Active` |
+| `cccccccc-cccc-cccc-cccc-cccccccccccc` | `33333333-3333-3333-3333-333333333333` | Perfume Mock 100ml | `Paused` |
+
+Também é possível criar novos produtos com `POST /products/`; eles ficam disponíveis em memória enquanto a aplicação estiver rodando.
 
 ### Restaurar dependências
 
