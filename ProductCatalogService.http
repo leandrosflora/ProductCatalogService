@@ -1,12 +1,13 @@
 @ProductCatalogService_HostAddress = http://localhost:5009
-@SkuId = 2a85c8a7-996d-4bd4-a1cb-3f3b82fbcb53
+@MockSkuId = aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa
+@NewSkuId = 2a85c8a7-996d-4bd4-a1cb-3f3b82fbcb53
 
 POST {{ProductCatalogService_HostAddress}}/products/
 Content-Type: application/json
 
 {
   "sellerId": "d8017639-4f75-4701-9915-f5757b6234a8",
-  "skuId": "{{SkuId}}",
+  "skuId": "{{NewSkuId}}",
   "title": "Smartphone demo",
   "category": "electronics",
   "price": 1299.90,
@@ -22,7 +23,7 @@ Content-Type: application/json
 
 ###
 
-GET {{ProductCatalogService_HostAddress}}/products/{{SkuId}}
+GET {{ProductCatalogService_HostAddress}}/products/{{MockSkuId}}
 Accept: application/json
 
 ###
@@ -32,14 +33,15 @@ Content-Type: application/json
 
 {
   "skuIds": [
-    "{{SkuId}}",
-    "74039986-a240-4cf8-9b2f-947d950f6cc2"
+    "{{MockSkuId}}",
+    "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+    "cccccccc-cccc-cccc-cccc-cccccccccccc"
   ]
 }
 
 ###
 
-PUT {{ProductCatalogService_HostAddress}}/products/{{SkuId}}/physical-info
+PUT {{ProductCatalogService_HostAddress}}/products/{{MockSkuId}}/physical-info
 Content-Type: application/json
 
 {
@@ -55,7 +57,7 @@ Content-Type: application/json
 
 ###
 
-PATCH {{ProductCatalogService_HostAddress}}/products/{{SkuId}}/status
+PATCH {{ProductCatalogService_HostAddress}}/products/{{MockSkuId}}/status
 Content-Type: application/json
 
 {
