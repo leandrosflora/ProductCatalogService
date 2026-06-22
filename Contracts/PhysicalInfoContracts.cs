@@ -1,9 +1,6 @@
 namespace ProductCatalogService.Contracts;
 
-public sealed record BatchPhysicalInfoRequest(
-    IReadOnlyList<Guid> SkuIds);
-
-public sealed record ProductPhysicalInfoResponse(
+public sealed record ProductLogisticsResponse(
     Guid SkuId,
     Guid SellerId,
     decimal WeightKg,
@@ -11,9 +8,7 @@ public sealed record ProductPhysicalInfoResponse(
     decimal WidthCm,
     decimal LengthCm,
     string Category,
-    bool IsFragile,
-    bool IsRestricted,
-    string Status);
+    IReadOnlyList<string> RestrictionCodes);
 
 public sealed record UpdatePhysicalInfoRequest(
     decimal WeightKg,

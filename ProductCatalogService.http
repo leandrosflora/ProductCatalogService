@@ -1,65 +1,11 @@
 @ProductCatalogService_HostAddress = http://localhost:5009
 @MockSkuId = aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa
-@NewSkuId = 2a85c8a7-996d-4bd4-a1cb-3f3b82fbcb53
+@OtherMockSkuId = bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb
 
-POST {{ProductCatalogService_HostAddress}}/products/
-Content-Type: application/json
-
-{
-  "sellerId": "d8017639-4f75-4701-9915-f5757b6234a8",
-  "skuId": "{{NewSkuId}}",
-  "title": "Smartphone demo",
-  "category": "electronics",
-  "price": 1299.90,
-  "dimensions": {
-    "heightCm": 10,
-    "widthCm": 20,
-    "lengthCm": 30
-  },
-  "weightKg": 1.25,
-  "isFragile": false,
-  "isRestricted": false
-}
-
-###
-
-GET {{ProductCatalogService_HostAddress}}/products/{{MockSkuId}}
+GET {{ProductCatalogService_HostAddress}}/v1/products/{{MockSkuId}}/logistics
 Accept: application/json
 
 ###
 
-POST {{ProductCatalogService_HostAddress}}/products/physical-info/batch
-Content-Type: application/json
-
-{
-  "skuIds": [
-    "{{MockSkuId}}",
-    "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
-    "cccccccc-cccc-cccc-cccc-cccccccccccc"
-  ]
-}
-
-###
-
-PUT {{ProductCatalogService_HostAddress}}/products/{{MockSkuId}}/physical-info
-Content-Type: application/json
-
-{
-  "weightKg": 1.50,
-  "dimensions": {
-    "heightCm": 11,
-    "widthCm": 21,
-    "lengthCm": 31
-  },
-  "isFragile": true,
-  "isRestricted": false
-}
-
-###
-
-PATCH {{ProductCatalogService_HostAddress}}/products/{{MockSkuId}}/status
-Content-Type: application/json
-
-{
-  "status": "Paused"
-}
+GET {{ProductCatalogService_HostAddress}}/v1/products/logistics/batch?skuIds={{MockSkuId}}&skuIds={{OtherMockSkuId}}
+Accept: application/json

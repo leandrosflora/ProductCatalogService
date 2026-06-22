@@ -14,7 +14,7 @@ public sealed class RedisProductPhysicalInfoCache : IProductPhysicalInfoCache
         _cache = cache;
     }
 
-    public async Task<ProductPhysicalInfoResponse?> GetAsync(Guid skuId, CancellationToken cancellationToken)
+    public async Task<ProductLogisticsResponse?> GetAsync(Guid skuId, CancellationToken cancellationToken)
     {
         var json = await _cache.GetStringAsync(BuildKey(skuId), cancellationToken);
 
@@ -23,11 +23,11 @@ public sealed class RedisProductPhysicalInfoCache : IProductPhysicalInfoCache
             return null;
         }
 
-        return JsonSerializer.Deserialize<ProductPhysicalInfoResponse>(json);
+        return JsonSerializer.Deserialize<ProductLogisticsResponse>(json);
     }
 
     public async Task SetAsync(
-        ProductPhysicalInfoResponse product,
+        ProductLogisticsResponse product,
         TimeSpan ttl,
         CancellationToken cancellationToken)
     {
@@ -50,6 +50,6 @@ public sealed class RedisProductPhysicalInfoCache : IProductPhysicalInfoCache
 
     private static string BuildKey(Guid skuId)
     {
-        return $"physical-info:{skuId:N}";
+        return $"product-logistics:{skuId:N}";
     }
 }

@@ -17,17 +17,41 @@ public sealed class ProductPhysicalInfoApplicationService
         _cache = cache;
     }
 
-    public async Task<IReadOnlyList<ProductPhysicalInfoResponse>> GetBatchAsync(
-        BatchPhysicalInfoRequest request,
+    public async Task<ProductLogisticsResponse?> GetBySkuIdAsync(
+        Guid skuId,
         CancellationToken cancellationToken)
     {
-        if (request.SkuIds.Count == 0)
+        var cached = await _cache.GetAsync(skuId, cancellationToken);
+
+        if (cached is not null)
+        {
+            return cached;
+        }
+
+        var product = await _repository.GetBySkuIdAsync(skuId, cancellationToken);
+
+        if (product is not { Status: ProductStatus.Active })
+        {
+            return null;
+        }
+
+        var logistics = MapLogistics(product);
+        await _cache.SetAsync(logistics, PhysicalInfoCacheTtl, cancellationToken);
+
+        return logistics;
+    }
+
+    public async Task<IReadOnlyList<ProductLogisticsResponse>> GetBatchAsync(
+        IReadOnlyCollection<Guid> skuIds,
+        CancellationToken cancellationToken)
+    {
+        if (skuIds.Count == 0)
         {
             return [];
         }
 
-        var distinctSkuIds = request.SkuIds.Distinct().ToArray();
-        var result = new List<ProductPhysicalInfoResponse>(distinctSkuIds.Length);
+        var distinctSkuIds = skuIds.Distinct().ToArray();
+        var result = new List<ProductLogisticsResponse>(distinctSkuIds.Length);
         var missingSkuIds = new List<Guid>();
 
         foreach (var skuId in distinctSkuIds)
@@ -52,18 +76,18 @@ public sealed class ProductPhysicalInfoApplicationService
 
         foreach (var product in products)
         {
-            var physicalInfo = MapPhysicalInfo(product);
-            result.Add(physicalInfo);
+            var logistics = MapLogistics(product);
+            result.Add(logistics);
 
-            await _cache.SetAsync(physicalInfo, PhysicalInfoCacheTtl, cancellationToken);
+            await _cache.SetAsync(logistics, PhysicalInfoCacheTtl, cancellationToken);
         }
 
         return result;
     }
 
-    private static ProductPhysicalInfoResponse MapPhysicalInfo(Product product)
+    private static ProductLogisticsResponse MapLogistics(Product product)
     {
-        return new ProductPhysicalInfoResponse(
+        return new ProductLogisticsResponse(
             product.SkuId,
             product.SellerId,
             product.WeightKg,
@@ -71,8 +95,23 @@ public sealed class ProductPhysicalInfoApplicationService
             product.Dimensions.WidthCm,
             product.Dimensions.LengthCm,
             product.Category,
-            product.IsFragile,
-            product.IsRestricted,
-            product.Status.ToString());
+            BuildRestrictionCodes(product));
+    }
+
+    private static IReadOnlyList<string> BuildRestrictionCodes(Product product)
+    {
+        var restrictionCodes = new List<string>();
+
+        if (product.IsFragile)
+        {
+            restrictionCodes.Add("FRAGILE");
+        }
+
+        if (product.IsRestricted)
+        {
+            restrictionCodes.Add("RESTRICTED");
+        }
+
+        return restrictionCodes;
     }
 }
