@@ -8,6 +8,7 @@ public sealed record ProductLogisticsResponse(
     decimal WidthCm,
     decimal LengthCm,
     string Category,
+    decimal Price,
     IReadOnlyList<string> RestrictionCodes);
 
 public sealed record UpdatePhysicalInfoRequest(

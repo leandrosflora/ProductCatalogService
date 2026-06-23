@@ -95,6 +95,7 @@ public sealed class ProductPhysicalInfoApplicationService
             product.Dimensions.WidthCm,
             product.Dimensions.LengthCm,
             product.Category,
+            product.Price,
             BuildRestrictionCodes(product));
     }
 

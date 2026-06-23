@@ -1,7 +1,9 @@
 using ProductCatalogService.Api;
 using ProductCatalogService.Application;
 using ProductCatalogService.Application.Ports;
-using ProductCatalogService.Infrastructure.Mocking;
+using ProductCatalogService.Infrastructure.Cache;
+using ProductCatalogService.Infrastructure.Outbox;
+using ProductCatalogService.Infrastructure.Persistence;
 
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -27,15 +29,21 @@ builder.Services.AddProblemDetails();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton<ProductCatalogDbConnectionFactory>();
+builder.Services.AddScoped<ProductCatalogUnitOfWork>();
+
+builder.Services.AddStackExchangeRedisCache(options =>
+    options.Configuration = builder.Configuration.GetConnectionString("Redis"));
+
 builder.Services.AddScoped<ProductApplicationService>();
 builder.Services.AddScoped<ProductPhysicalInfoApplicationService>();
 
-builder.Services.AddSingleton<MockProductCatalogStore>();
-builder.Services.AddScoped<IProductRepository, MockProductRepository>();
-builder.Services.AddSingleton<IProductPhysicalInfoCache, MockProductPhysicalInfoCache>();
-builder.Services.AddSingleton<IEventPublisher, MockEventPublisher>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductPhysicalInfoCache, RedisProductPhysicalInfoCache>();
+builder.Services.AddScoped<IEventPublisher, OutboxEventPublisher>();
 
-builder.Services.AddHealthChecks();
+builder.Services.AddHealthChecks()
+    .AddCheck<ProductCatalogDbHealthCheck>("product-catalog-db");
 
 var app = builder.Build();
 

@@ -25,6 +25,36 @@ public sealed class Product
     {
     }
 
+    internal Product(
+        Guid id,
+        Guid sellerId,
+        Guid skuId,
+        string title,
+        string category,
+        decimal price,
+        ProductStatus status,
+        ProductDimensions dimensions,
+        decimal weightKg,
+        bool isFragile,
+        bool isRestricted,
+        DateTimeOffset createdAt,
+        DateTimeOffset updatedAt)
+    {
+        Id = id;
+        SellerId = sellerId;
+        SkuId = skuId;
+        Title = title;
+        Category = category;
+        Price = price;
+        Status = status;
+        Dimensions = dimensions;
+        WeightKg = weightKg;
+        IsFragile = isFragile;
+        IsRestricted = isRestricted;
+        CreatedAt = createdAt;
+        UpdatedAt = updatedAt;
+    }
+
     public Product(
         Guid sellerId,
         Guid skuId,

@@ -6,18 +6,19 @@ namespace ProductCatalogService.Infrastructure.Outbox;
 
 public sealed class OutboxEventPublisher : IEventPublisher
 {
-    private readonly ProductCatalogDbContext _dbContext;
+    private readonly ProductCatalogUnitOfWork _unitOfWork;
 
-    public OutboxEventPublisher(ProductCatalogDbContext dbContext)
+    public OutboxEventPublisher(ProductCatalogUnitOfWork unitOfWork)
     {
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
 
-    public async Task AddToOutboxAsync(string eventType, object payload, CancellationToken cancellationToken)
+    public Task AddToOutboxAsync(string eventType, object payload, CancellationToken cancellationToken)
     {
         var json = JsonSerializer.Serialize(payload);
         var message = new OutboxMessage(eventType, json);
 
-        await _dbContext.OutboxMessages.AddAsync(message, cancellationToken);
+        _unitOfWork.AddOutboxMessage(message);
+        return Task.CompletedTask;
     }
 }
