@@ -69,8 +69,7 @@ public sealed class ProductRepository : IProductRepository
         const string sql = $"""
             select {ProductColumns}
             from products
-            where sku_id = any(@SkuIds)
-              and status = @Status;
+            where sku_id = any(@SkuIds);
             """;
 
         await using var connection = _connectionFactory.CreateConnection();
