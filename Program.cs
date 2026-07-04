@@ -4,6 +4,7 @@ using ProductCatalogService.Application.Ports;
 using ProductCatalogService.Infrastructure.Cache;
 using ProductCatalogService.Infrastructure.Outbox;
 using ProductCatalogService.Infrastructure.Persistence;
+using Meli.Observability;
 
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -12,6 +13,8 @@ using OpenTelemetry.Trace;
 var builder = WebApplication.CreateBuilder(args);
 var serviceName = builder.Environment.ApplicationName;
 var otlpEndpoint = builder.Configuration["OpenTelemetry:OtlpEndpoint"] ?? "http://localhost:5107";
+
+builder.Logging.AddMeliStructuredLogging(serviceName, otlpEndpoint);
 
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource => resource.AddService(serviceName))
