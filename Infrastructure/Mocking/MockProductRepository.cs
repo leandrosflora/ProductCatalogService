@@ -24,6 +24,11 @@ public sealed class MockProductRepository : IProductRepository
         return Task.FromResult(_store.GetActiveProducts(skuIds));
     }
 
+    public Task<IReadOnlyList<Product>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        return Task.FromResult(_store.GetAll());
+    }
+
     public Task AddAsync(Product product, CancellationToken cancellationToken)
     {
         _store.Add(product);

@@ -20,6 +20,7 @@ public sealed class ProductRepository : IProductRepository
         length_cm as LengthCm,
         is_fragile as IsFragile,
         is_restricted as IsRestricted,
+        image_url as ImageUrl,
         created_at as CreatedAt,
         updated_at as UpdatedAt
         """;
@@ -93,6 +94,27 @@ public sealed class ProductRepository : IProductRepository
         return products;
     }
 
+    public async Task<IReadOnlyList<Product>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        const string sql = $"""
+            select {ProductColumns}
+            from products
+            order by updated_at desc;
+            """;
+
+        await using var connection = _connectionFactory.CreateConnection();
+        var command = new CommandDefinition(sql, cancellationToken: cancellationToken);
+        var records = await connection.QueryAsync<ProductRecord>(command);
+        var products = records.Select(x => x.ToDomain()).ToList();
+
+        foreach (var product in products)
+        {
+            _unitOfWork.Track(product);
+        }
+
+        return products;
+    }
+
     public Task AddAsync(Product product, CancellationToken cancellationToken)
     {
         _unitOfWork.Add(product);
@@ -116,6 +138,7 @@ public sealed class ProductRepository : IProductRepository
                 length_cm,
                 is_fragile,
                 is_restricted,
+                image_url,
                 created_at,
                 updated_at
             )
@@ -133,6 +156,7 @@ public sealed class ProductRepository : IProductRepository
                 @LengthCm,
                 @IsFragile,
                 @IsRestricted,
+                @ImageUrl,
                 @CreatedAt,
                 @UpdatedAt
             );
@@ -152,6 +176,7 @@ public sealed class ProductRepository : IProductRepository
                 length_cm = @LengthCm,
                 is_fragile = @IsFragile,
                 is_restricted = @IsRestricted,
+                image_url = @ImageUrl,
                 updated_at = @UpdatedAt
             where id = @Id;
             """;
@@ -233,6 +258,7 @@ public sealed class ProductRepository : IProductRepository
                 product.Dimensions.LengthCm,
                 product.IsFragile,
                 product.IsRestricted,
+                product.ImageUrl,
                 product.CreatedAt,
                 product.UpdatedAt
             },

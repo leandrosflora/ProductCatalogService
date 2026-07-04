@@ -96,7 +96,10 @@ public sealed class ProductPhysicalInfoApplicationService
             product.Dimensions.LengthCm,
             product.Category,
             product.Price,
-            BuildRestrictionCodes(product));
+            BuildRestrictionCodes(product),
+            product.ImageUrl,
+            product.Title,
+            product.Status.ToString());
     }
 
     private static IReadOnlyList<string> BuildRestrictionCodes(Product product)

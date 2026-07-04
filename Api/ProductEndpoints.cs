@@ -36,6 +36,17 @@ public static class ProductEndpoints
         .WithName("CreateProduct")
         .WithSummary("Creates a product (commercial + logistics attributes).");
 
+        group.MapGet("/", async (
+            ProductApplicationService service,
+            CancellationToken cancellationToken) =>
+        {
+            var response = await service.GetAllAsync(cancellationToken);
+
+            return Results.Ok(response);
+        })
+        .WithName("ListProducts")
+        .WithSummary("Lists every product in the catalog, regardless of status.");
+
         group.MapGet("/{skuId:guid}", async (
             Guid skuId,
             ProductApplicationService service,

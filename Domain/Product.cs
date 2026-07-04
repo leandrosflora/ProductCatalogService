@@ -18,6 +18,8 @@ public sealed class Product
     public bool IsFragile { get; private set; }
     public bool IsRestricted { get; private set; }
 
+    public string? ImageUrl { get; private set; }
+
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset UpdatedAt { get; private set; }
 
@@ -38,7 +40,8 @@ public sealed class Product
         bool isFragile,
         bool isRestricted,
         DateTimeOffset createdAt,
-        DateTimeOffset updatedAt)
+        DateTimeOffset updatedAt,
+        string? imageUrl = null)
     {
         Id = id;
         SellerId = sellerId;
@@ -53,6 +56,7 @@ public sealed class Product
         IsRestricted = isRestricted;
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
+        ImageUrl = imageUrl;
     }
 
     public Product(
@@ -64,7 +68,8 @@ public sealed class Product
         ProductDimensions dimensions,
         decimal weightKg,
         bool isFragile,
-        bool isRestricted)
+        bool isRestricted,
+        string? imageUrl = null)
     {
         if (sellerId == Guid.Empty)
         {
@@ -106,6 +111,7 @@ public sealed class Product
         WeightKg = weightKg;
         IsFragile = isFragile;
         IsRestricted = isRestricted;
+        ImageUrl = imageUrl;
         Status = ProductStatus.Active;
         CreatedAt = DateTimeOffset.UtcNow;
         UpdatedAt = DateTimeOffset.UtcNow;

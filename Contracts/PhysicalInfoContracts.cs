@@ -9,7 +9,10 @@ public sealed record ProductLogisticsResponse(
     decimal LengthCm,
     string Category,
     decimal Price,
-    IReadOnlyList<string> RestrictionCodes);
+    IReadOnlyList<string> RestrictionCodes,
+    string? ImageUrl,
+    string Title,
+    string Status);
 
 public sealed record UpdatePhysicalInfoRequest(
     decimal WeightKg,

@@ -41,7 +41,8 @@ public sealed class ProductApplicationService
                 request.Dimensions.LengthCm),
             request.WeightKg,
             request.IsFragile,
-            request.IsRestricted);
+            request.IsRestricted,
+            request.ImageUrl);
 
         await _repository.AddAsync(product, cancellationToken);
         await AddProductEventAsync("ProductCreated", product, cancellationToken);
@@ -55,6 +56,13 @@ public sealed class ProductApplicationService
         var product = await _repository.GetBySkuIdAsync(skuId, cancellationToken);
 
         return product is null ? null : Map(product);
+    }
+
+    public async Task<IReadOnlyList<ProductResponse>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        var products = await _repository.GetAllAsync(cancellationToken);
+
+        return products.Select(Map).ToList();
     }
 
     public async Task<ProductResponse> UpdatePhysicalInfoAsync(
@@ -146,6 +154,7 @@ public sealed class ProductApplicationService
             product.Dimensions.WidthCm,
             product.Dimensions.LengthCm,
             product.IsFragile,
-            product.IsRestricted);
+            product.IsRestricted,
+            product.ImageUrl);
     }
 }

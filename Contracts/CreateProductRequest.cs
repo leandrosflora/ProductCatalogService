@@ -9,7 +9,8 @@ public sealed record CreateProductRequest(
     ProductDimensionsDto Dimensions,
     decimal WeightKg,
     bool IsFragile,
-    bool IsRestricted);
+    bool IsRestricted,
+    string? ImageUrl = null);
 
 public sealed record ProductDimensionsDto(
     decimal HeightCm,

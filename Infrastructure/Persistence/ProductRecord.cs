@@ -17,6 +17,7 @@ internal sealed class ProductRecord
     public decimal LengthCm { get; init; }
     public bool IsFragile { get; init; }
     public bool IsRestricted { get; init; }
+    public string? ImageUrl { get; init; }
     public DateTimeOffset CreatedAt { get; init; }
     public DateTimeOffset UpdatedAt { get; init; }
 
@@ -35,6 +36,7 @@ internal sealed class ProductRecord
             IsFragile,
             IsRestricted,
             CreatedAt,
-            UpdatedAt);
+            UpdatedAt,
+            ImageUrl);
     }
 }

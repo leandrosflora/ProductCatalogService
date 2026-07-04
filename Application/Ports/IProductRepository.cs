@@ -8,6 +8,8 @@ public interface IProductRepository
 
     Task<IReadOnlyList<Product>> GetBySkuIdsAsync(IReadOnlyCollection<Guid> skuIds, CancellationToken cancellationToken);
 
+    Task<IReadOnlyList<Product>> GetAllAsync(CancellationToken cancellationToken);
+
     Task AddAsync(Product product, CancellationToken cancellationToken);
 
     Task SaveChangesAsync(CancellationToken cancellationToken);

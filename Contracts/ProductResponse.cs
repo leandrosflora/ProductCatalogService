@@ -12,4 +12,5 @@ public sealed record ProductResponse(
     decimal WidthCm,
     decimal LengthCm,
     bool IsFragile,
-    bool IsRestricted);
+    bool IsRestricted,
+    string? ImageUrl);

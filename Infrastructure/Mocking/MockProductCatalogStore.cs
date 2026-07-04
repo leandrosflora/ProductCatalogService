@@ -77,6 +77,14 @@ public sealed class MockProductCatalogStore
         }
     }
 
+    public IReadOnlyList<Product> GetAll()
+    {
+        lock (_lock)
+        {
+            return _products.Values.ToArray();
+        }
+    }
+
     public void Add(Product product)
     {
         lock (_lock)
